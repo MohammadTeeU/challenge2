@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'dart:ui' as ui;
 
 import 'bottom_items.dart';
 import 'cards_radio.dart';
@@ -36,21 +37,25 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int isClickedCon = 0;
+  List<double> Freqs = [98.5, 100.1, 160, 125.2, 200, 140];
+  List<String> Names = [
+    "One Station",
+    "Two Station",
+    "Three Station",
+    "Four Station",
+    "Five Station",
+    "Six Station"
+  ];
   @override
   Widget build(BuildContext context) {
-    var _selectedIndex = 0;
-    var TabInd = 0;
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 1, 1, 42),
         body: SafeArea(
           child: Row(
             children: [
-              Container(
-                height: MediaQuery.of(context).size.height,
-                child: NavigBarSide(),
-              ),
+              const NavigBarSide(),
               Padding(
-                padding: const EdgeInsets.fromLTRB(20, 25, 20, 0),
+                padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -58,15 +63,15 @@ class _MyHomePageState extends State<MyHomePage> {
                       padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
-                        children: const [
-                          Text(
+                        children: [
+                          const Text(
                             'Hello',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 30,
                                 color: Colors.white),
                           ),
-                          Text(
+                          const Text(
                             ' Miau',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
@@ -74,87 +79,45 @@ class _MyHomePageState extends State<MyHomePage> {
                               color: Color.fromARGB(255, 255, 41, 109),
                             ),
                           ),
+                          Container(
+                            width: MediaQuery.of(context).size.width - 325,
+                          ),
+                          Image.asset('images/1.png'),
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 30, 0, 30),
-                      child: const Text(
+                    const Padding(
+                      padding: EdgeInsets.fromLTRB(0, 30, 0, 30),
+                      child: Text(
                         'Popular',
                         style: TextStyle(fontSize: 30, color: Colors.white),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                      child: Row(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              isClickedCon = 0;
-                              setState(() {});
-                            },
-                            child: CardRadioUser(
-                                isClicked: isClickedCon == 0 ? true : false),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              isClickedCon = 1;
-                              setState(() {});
-                            },
-                            child: CardRadioUser(
-                                isClicked: isClickedCon == 1 ? true : false),
-                          ),
-                        ],
+                    /////////GridView
+                    ///
+                    Container(
+                      width: MediaQuery.of(context).size.width - 110,
+                      height: MediaQuery.of(context).size.height - 400,
+                      child: GridView.count(
+                        crossAxisCount: 2,
+                        // Generate 100 Widgets that display their index in the List
+                        children: List.generate(6, (index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: InkWell(
+                                onTap: () {
+                                  isClickedCon = index;
+                                  setState(() {});
+                                },
+                                child: BuildCard(Freqs[index], Names[index],
+                                    isClickedCon == index ? true : false)),
+                          );
+                        }),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                      child: Row(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              isClickedCon = 2;
-                              setState(() {});
-                            },
-                            child: CardRadioUser(
-                                isClicked: isClickedCon == 2 ? true : false),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              isClickedCon = 3;
-                              setState(() {});
-                            },
-                            child: CardRadioUser(
-                                isClicked: isClickedCon == 3 ? true : false),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                      child: Row(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              isClickedCon = 4;
-                              setState(() {});
-                            },
-                            child: CardRadioUser(
-                                isClicked: isClickedCon == 4 ? true : false),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              isClickedCon = 5;
-                              setState(() {});
-                            },
-                            child: CardRadioUser(
-                                isClicked: isClickedCon == 5 ? true : false),
-                          ),
-                        ],
-                      ),
-                    ),
+                    /////////
                     Expanded(child: Container()),
-                    bottomItems(),
+                    BottomItems(),
                   ],
                 ),
               )

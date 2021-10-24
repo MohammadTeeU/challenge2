@@ -1,24 +1,6 @@
 import 'package:flutter/material.dart';
-import 'dart:ui' as ui;
 
-class CardRadioUser extends StatefulWidget {
-  CardRadioUser({required this.isClicked, Key? key}) : super(key: key);
-
-  bool isClicked;
-  @override
-  State<CardRadioUser> createState() => _CardRadioUser(isClicked);
-}
-
-class _CardRadioUser extends State<CardRadioUser> {
-  _CardRadioUser(this.isClicked);
-  bool isClicked;
-  @override
-  Widget build(BuildContext context) {
-    return BuildCard(isClicked);
-  }
-}
-
-Widget BuildCard(bool isClicked) {
+Widget BuildCard(double Freq, String Name, bool isClicked) {
   return Padding(
     padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
     child: Container(
@@ -60,13 +42,13 @@ Widget BuildCard(bool isClicked) {
             Center(
               child: Column(
                 children: [
-                  Text('98',
+                  Text(Freq.toString(),
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: isClicked ? Colors.white : Colors.grey,
                           fontSize: 35,
                           height: 1.2)),
-                  Text('Divelement',
+                  Text(Name,
                       style: TextStyle(
                           color: isClicked ? Colors.white : Colors.grey,
                           fontSize: 15,
@@ -77,6 +59,11 @@ Widget BuildCard(bool isClicked) {
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
               child: CustomPaint(
+                foregroundPainter: isClicked
+                    ? CircularPoint(
+                        clr: Color.fromARGB(255, (Freq / 150).toInt(),
+                            (Freq.toInt() % 150) * 20, Freq.toInt()))
+                    : CircularPoint(clr: Colors.grey),
                 size: Size(
                     100,
                     (100 * 0.26136363636363635)
@@ -93,7 +80,22 @@ Widget BuildCard(bool isClicked) {
   );
 }
 
-//Copy this CustomPainter code to the Bottom of the File
+class CircularPoint extends CustomPainter {
+  CircularPoint({required this.clr});
+  Color clr;
+  @override
+  void paint(Canvas canvas, Size size) {
+    var paint1 = Paint()
+      ..color = clr
+      ..style = PaintingStyle.fill;
+    canvas.drawCircle(Offset(4, 5), 5, paint1);
+    canvas.drawCircle(Offset(100, 5), 5, paint1);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => true;
+}
+
 class RPSCustomPainter extends CustomPainter {
   RPSCustomPainter({required this.clr});
   Color clr;
